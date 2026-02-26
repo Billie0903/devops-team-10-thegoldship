@@ -36,11 +36,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
           cache-dependency-path: backend/package-lock.json
   # Step 3: Install backend dependencies
       - name: Install backend dependencies
-        working-directory: ./backend
+        working-directory: backend
         run: npm ci
   # Step 4: Initialize test database
       - name: Initialize database
@@ -50,7 +49,7 @@ jobs:
           psql -h localhost -U postgres -d todoapp_test -f db/init.sql
   # Step 5: Run backend tests
       - name: Run backend tests
-        working-directory: ./backend
+        working-directory: backend
         env:
           DB_HOST: localhost
           DB_PORT: 5432
@@ -72,8 +71,8 @@ jobs:
       - name: Build and push backend image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
+          context: backend
+          file: backend/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/devops-backend:pr-${{ github.event.pull_request.number }}
@@ -84,8 +83,8 @@ jobs:
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
+          context: frontend
+          file: frontend/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:pr-${{ github.event.pull_request.number }}
