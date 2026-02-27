@@ -36,6 +36,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
           cache-dependency-path: backend/package-lock.json
   # Step 3: Install backend dependencies
       - name: Install backend dependencies
@@ -45,7 +46,7 @@ jobs:
       - name: Initialize database
         env:
           PGPASSWORD: postgres
-        run: |
+        run:
           psql -h localhost -U postgres -d todoapp_test -f db/init.sql
   # Step 5: Run backend tests
       - name: Run backend tests
