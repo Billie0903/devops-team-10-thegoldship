@@ -41,10 +41,10 @@ jobs:
   # Step 3: Install backend dependencies
       - name: Install backend dependencies
         working-directory: ./backend
-        run: npm ci
+        run: npm install
       - name: Install frontend dependencies
         working-directory: ./frontend
-        run: npm ci
+        run: npm install
   # Step 4: Initialize test database
       - name: Initialize database
         env:
