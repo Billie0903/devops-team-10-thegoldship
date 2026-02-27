@@ -97,3 +97,5 @@ jobs:
           docker images ${{ secrets.DOCKER_HUB_USERNAME }}/devops-backend:latest --format "{{.Size}}"
           echo "Frontend image size:"
           docker images ${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:latest --format "{{.Size}}"
+
+#help
