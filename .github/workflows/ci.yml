@@ -36,12 +36,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+#          cache: 'npm'
           cache-dependency-path: backend/package-lock.json
   # Step 3: Install backend dependencies
       - name: Install backend dependencies
         working-directory: ./backend
-        run: npm ci
+        run: npm install
   # Step 4: Initialize test database
       - name: Initialize database
         env:
@@ -66,8 +66,8 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
   # Step 7: Set up Docker Buildx (for better builds)
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v3
   # Step 8: Build and push backend image
       - name: Build and push backend image
         uses: docker/build-push-action@v5
