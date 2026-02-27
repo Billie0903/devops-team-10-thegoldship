@@ -10,7 +10,7 @@ app.use(express.json());
 
 // BUG #1: Wrong default password - doesn't match docker-compose!
 const pool = new Pool({
-   user: process.env.DB_USER || 'help',
+   user: process.env.DB_USER || 'postgres',
    host: process.env.DB_HOST || 'localhost',
    database: process.env.DB_NAME || 'todoapp', // Bug Fix Might be postgres will check later 
    password: process.env.DB_PASSWORD || 'postgres', //Bug fix 1, 
@@ -38,8 +38,8 @@ app.post('/api/todos', async (req, res) => {
       const { title, completed = false } = req.body;
 
       // STUDENT FIX: Add validation here!
-      if(!title || title.trim() === '') { //Bug fix
-         return res.status(400).json({ error: 'Title is required'}); // Bug fix 
+//      if(!title || title.trim() === '') { //Bug fix
+//         return res.status(400).json({ error: 'Title is required'}); // Bug fix 
       }
       // Hint: Check if title is empty or undefined
       // Return 400 status with error message if invalid
