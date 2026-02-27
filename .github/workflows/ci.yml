@@ -66,29 +66,34 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
   # Step 7: Set up Docker Buildx (for better builds)
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
   # Step 8: Build and push backend image (Standard Docker)
-      - name: Build backend image
-        run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/devops-backend:pr-${{ github.event.pull_request.number }} ./backend
-          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/devops-backend:pr-${{ github.event.pull_request.number }} ${{ secrets.DOCKER_HUB_USERNAME }}/devops-backend:latest
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-backend:pr-${{ github.event.pull_request.number }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-backend:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/devops-backend:latest
+          cache-to: type=inline
 
-      - name: Push backend image
-        run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/devops-backend:pr-${{ github.event.pull_request.number }}
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/devops-backend:latest
 
   # Step 9: Build and push frontend image (Standard Docker)
-      - name: Build frontend image
-        run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:pr-${{ github.event.pull_request.number }} ./frontend
-          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:pr-${{ github.event.pull_request.number }} ${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:latest
-
-      - name: Push frontend image
-        run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:pr-${{ github.event.pull_request.number }}
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:latest
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:pr-${{ github.event.pull_request.number }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:latest
+          cache-to: type=inline
 
   # Step 10: Image size analysis
       - name: Analyze Docker image sizes
