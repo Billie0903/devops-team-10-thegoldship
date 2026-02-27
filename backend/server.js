@@ -38,7 +38,7 @@ app.post('/api/todos', async (req, res) => {
       const { title, completed = false } = req.body;
 
       // STUDENT FIX: Add validation here!
-      if(!title || title.trim() === '') { //Bug fix
+     if(!title || title.trim() === '') { //Bug fix
          return res.status(400).json({ error: 'Title is required'}); // Bug fix 
       }
       // Hint: Check if title is empty or undefined
