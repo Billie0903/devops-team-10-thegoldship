@@ -49,7 +49,7 @@ WORKDIR /app
 COPY --from=builder /app/package*.json ./
 
 # Install ONLY production dependencies
-RUN npm ci --only=production
+RUN npm install --only=production
 
 # Copy application code from builder
 COPY --from=builder /app/*.js ./
