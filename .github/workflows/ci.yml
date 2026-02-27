@@ -47,7 +47,7 @@ jobs:
         env:
           PGPASSWORD: postgres
         run:
-          psql -h localhost -U postgres -d todoapp_test -f db/init.sql
+          psql -h localhost -U postgres -d todoapp_test -f database/database.sql
   # Step 5: Run backend tests
       - name: Run backend tests
         working-directory: ./backend
